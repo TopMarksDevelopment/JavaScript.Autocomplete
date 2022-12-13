@@ -1,6 +1,6 @@
 {
     "name": "@topmarksdevelopment/autocomplete",
-    "version": "0.0.1-alpha.1",
+    "version": "1.0.0",
     "description": "Autocomplete user input - similar to JQuery UI Autocomplete",
     "author": "TopMarksDevelopment",
     "license": "MIT",
