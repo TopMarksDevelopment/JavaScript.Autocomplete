@@ -1,0 +1,292 @@
+<head>
+    <title>Autocomplete Examples | Top Marks Development</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js" defer onload="hljs.highlightAll()"></script>
+    <style>
+        body{display:flex;align-items:center;justify-content:center;margin:1em;}
+        body *{margin:0;padding:0}
+        .cnt{margin:auto;max-width:500px;text-align:center;width:90vw}
+        .cnt input{border:1px solid;max-width:350px;padding:.1rem .25rem;text-align:center;width:100%}
+        .cnt input:focus-visible{outline:1px ridge}
+        .cnt pre{text-align:start}
+        code{background:#ebebeb;border-radius:4px;padding:0 .2rem}
+
+        /*
+         * My Autocomplete styles
+         */
+        .autocomplete{
+            background: #fff;
+            border: 1px solid;
+            border-top: 0;
+            list-style: none;
+            padding-top: .25rem;
+            position: absolute;
+            transform: translateY(-1px);
+        }
+        .autocomplete li {
+            cursor: pointer;
+            padding: .25rem .75rem;
+        }
+        .autocomplete li.focused {
+            background-color:lightblue;
+        }
+    </style>
+</head><body>
+    <div class="cnt">
+        <h1>Autocomplete Examples</h1>
+        <br />
+        
+        <h3>Custom source with renderer</h3>
+        <input id="aC1"/>
+        <details>
+            <summary><small>See the code (using <code>bundle.js</code>)</small></summary>
+
+<pre><code class="language-js">// Drop `TopMarksDevelopment` in CJS
+new TopMarksDevelopment.Autocomplete('#aC1', {
+    source: () =&gt; [
+        {
+            type: 'My type one',
+            detail: 'My detail one'
+        },
+        {
+            type: 'My type two',
+            detail: 'My detail two'
+        }
+    ],
+    renderers: {
+        itemRenderer: ({ item }) =&gt; {
+            const li = document.createElement('li');
+
+            li.dataset.value = item.type;
+            li.innerText = item.detail;
+
+            return li;
+        },
+    }
+}).start();
+</code></pre>
+        </details>
+        <br /><br />
+
+        <h3>As above (+ <code>onOpen</code> match width)</h3>
+        <input id="aC2" />
+        <details>
+            <summary><small>See the code (using <code>bundle.js</code>)</small></summary>
+<pre><code class="language-js">// Drop `TopMarksDevelopment` in CJS
+new TopMarksDevelopment.Autocomplete('#aC2', {
+    source: () =&gt; [
+        {
+            type: 'My type one',
+            detail: 'My detail one'
+        },
+        {
+            type: 'My type two',
+            detail: 'My detail two'
+        }
+    ],
+    renderers: {
+        itemRenderer: ({ item }) =&gt; {
+            const li = document.createElement('li');
+
+            li.dataset.value = item.type;
+            li.innerText = item.detail;
+
+            return li;
+        },
+    },
+    onOpen: (ev, data) =&gt; {
+        data.ul.style.width = `${ev.target.clientWidth}px`;
+    }
+}).start();
+</code></pre>
+        </details>
+        <br /><br />
+
+        <h3>String array as source</h3>
+        <input id="aC3" />
+        <details>
+            <summary><small>See the code (using <code>bundle.js</code>)</small></summary>
+<pre><code class="language-js">// Drop `TopMarksDevelopment` in CJS
+new TopMarksDevelopment.Autocomplete('#aC3', {
+    source: [
+        "String 1",
+        "String 2",
+        "String 3",
+    ]
+}).start();
+</code></pre>
+        </details>
+        <br /><br />
+
+        <h3>As above (+ <code>autoFocus</code>)</h3>
+        <input id="aC4" />
+        <details>
+            <summary><small>See the code (using <code>bundle.js</code>)</small></summary>
+<pre><code class="language-js">// Drop `TopMarksDevelopment` in CJS
+new TopMarksDevelopment.Autocomplete('#aC4', {
+    source: [
+        "String 1",
+        "String 2",
+        "String 3",
+    ],
+    autoFocus: true
+}).start();
+</code></pre>
+        </details>
+        <br /><br />
+
+        <h3>Redirect on <code>itemSelect</code> with <code>{ link }</code></h3>
+        <input id="aC5" />
+        <details>
+            <summary><small>See the code (using <code>bundle.js</code>)</small></summary>
+<pre><code class="language-js">// Drop `TopMarksDevelopment` in CJS
+new TopMarksDevelopment.Autocomplete('#aC5', {
+    source: () =&gt; [
+        {
+            value: 'TopMarksDevelopment.com',
+            link: 'https://www.topmarksdevelopment.com'
+        },
+        {
+            value: 'Autocomplete on GitHub',
+            link: 'https://github.com/topmarksdevelopment/javascript.autocomplete'
+        }
+    ]
+}).start();
+</code></pre>
+        </details>
+        <br /><br />
+
+        <h3>With a URL <code>source</code></h3>
+        <input id="aC6" />
+        <details>
+            <summary><small>See the code (using <code>bundle.js</code>)</small></summary>
+<pre><code class="language-js">// Drop `TopMarksDevelopment` in CJS
+new TopMarksDevelopment.Autocomplete('#aC6', {
+    source: './tests/testdata.json'
+}).start();
+</code></pre>
+        </details>
+    </div>
+</body>
+
+<script>
+function start() {
+    //===============
+    // AC - example 1
+    //===============
+
+    new TopMarksDevelopment.Autocomplete('#aC1', {
+        source: () => [
+            {
+                type: 'My type one',
+                detail: "My detail one"
+            },
+            {
+                type: 'My type two',
+                detail: "My detail two"
+            }
+        ],
+        renderers: {
+            itemRenderer: ({ item }) => {
+                const li = document.createElement('li');
+
+                li.dataset.value = item.type;
+                li.innerText = item.detail;
+
+                return li;
+            },
+        }
+    }).start();
+
+
+    //===============
+    // AC - example 2
+    //===============
+
+    // Drop `TopMarksDevelopment` in CJS
+    new TopMarksDevelopment.Autocomplete('#aC2', {
+        source: () => [
+            {
+                type: 'My type one',
+                detail: "My detail one"
+            },
+            {
+                type: 'My type two',
+                detail: "My detail two"
+            }
+        ],
+        renderers: {
+            itemRenderer: ({ item }) => {
+                const li = document.createElement('li');
+
+                li.dataset.value = item.type;
+                li.innerText = item.detail;
+
+                return li;
+            },
+        },
+        onOpen: (ev, data) => {
+            data.ul.style.width = `${ev.target.clientWidth}px`;
+        }
+    }).start();
+
+    
+    //===============
+    // AC - example 3
+    //===============
+
+    // Drop `TopMarksDevelopment` in CJS
+    new TopMarksDevelopment.Autocomplete('#aC3', {
+        source: [
+            "String 1",
+            "String 2",
+            "String 3",
+        ]
+    }).start();
+
+
+    //===============
+    // AC - example 4
+    //===============
+
+    // Drop `TopMarksDevelopment` in CJS
+    new TopMarksDevelopment.Autocomplete('#aC4', {
+        source: [
+            "String 1",
+            "String 2",
+            "String 3",
+        ],
+        autoFocus: true
+    }).start();
+    
+
+    //===============
+    // AC - example 5
+    //===============
+
+    // Drop `TopMarksDevelopment` in CJS
+    new TopMarksDevelopment.Autocomplete('#aC5', {
+        source: () => [
+            {
+                value: 'TopMarksDevelopment.com',
+                link: 'https://www.topmarksdevelopment.com'
+            },
+            {
+                value: 'Autocomplete on GitHub',
+                link: 'https://github.com/topmarksdevelopment/javascript-autocomplete'
+            }
+        ]
+    }).start();
+
+
+    //===============
+    // AC - example 6
+    //===============
+
+    // Drop `TopMarksDevelopment` in CJS
+    new TopMarksDevelopment.Autocomplete('#aC6', {
+        source: './testdata.json'
+    }).start();
+}
+</script>
+<script src="../lib/bundle.js" defer onload="start()"></script>
