@@ -1,7 +1,3 @@
-import { LogLevel } from '@topmarksdevelopment/javascript-logger';
-import { IDefaultOptions, IOptions } from './Interfaces/IOptions';
-import { ListItemType } from './Types/SourceTypes';
-import { IPositionData } from './Interfaces/IPositionData';
 import {
     AutocompleteEventFunction as EventFunction,
     CloseEventData,
@@ -13,6 +9,10 @@ import {
     SelectEventData,
     UlListEventData,
 } from './Types/EventTypes';
+import { IPositionData } from './Interfaces/IPositionData';
+import { IDefaultOptions, IOptions } from './Interfaces/IOptions';
+import { ListItemType } from './Types/SourceTypes';
+import { LogLevel } from '@topmarksdevelopment/javascript-logger';
 import { position, CollisionHandler } from '@topmarksdevelopment/position';
 
 export enum AutocompleteStatus {
