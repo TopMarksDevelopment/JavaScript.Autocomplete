@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changes
 
 -   Developer dependency bumps (no user-facing changes)
+-   Updated publish action, `tslib` requirement and node version (no user-facing changes)
 
 ## [1.0.0] - 2022-12-13
 
