@@ -27,5 +27,10 @@ export default {
             compact: false,
         },
     ],
-    plugins: [rollupTypescript(), terser(), commonjs(), nodeResolve()],
+    plugins: [
+        rollupTypescript(),
+        terser({ sourceMap: true }),
+        commonjs(),
+        nodeResolve(),
+    ],
 };
