@@ -1,3 +1,5 @@
+'use strict';
+
 import { ListItemType, SourceReturnTypes } from './SourceTypes';
 
 export declare type UlListEventData = { ul: HTMLUListElement };

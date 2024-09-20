@@ -1,3 +1,5 @@
+'use strict';
+
 import { Alignment, CollisionHandler } from '@topmarksdevelopment/position';
 
 export interface IPositionData {

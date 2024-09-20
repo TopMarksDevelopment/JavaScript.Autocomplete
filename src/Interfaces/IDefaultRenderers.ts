@@ -1,3 +1,5 @@
+'use strict';
+
 import { ListItemType } from '../Types/SourceTypes';
 
 type ItemRenderer<rT> = (data: {

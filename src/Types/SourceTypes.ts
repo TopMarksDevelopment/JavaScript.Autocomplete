@@ -1,3 +1,5 @@
+'use strict';
+
 import { ISourceData } from '../Interfaces/ISourceData';
 
 export declare type ListItemType<T extends string | unknown> = T extends string

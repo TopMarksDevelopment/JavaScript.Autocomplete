@@ -41,8 +41,7 @@
         <details>
             <summary><small>See the code (using <code>bundle.js</code>)</small></summary>
 
-<pre><code class="language-js">// Drop `TopMarksDevelopment` in CJS
-new TopMarksDevelopment.Autocomplete('#aC1', {
+<pre><code class="language-js">new TopMarksDevelopment.Autocomplete('#aC1', {
     source: () =&gt; [
         {
             type: 'My type one',
@@ -72,8 +71,7 @@ new TopMarksDevelopment.Autocomplete('#aC1', {
         <input id="aC2" />
         <details>
             <summary><small>See the code (using <code>bundle.js</code>)</small></summary>
-<pre><code class="language-js">// Drop `TopMarksDevelopment` in CJS
-new TopMarksDevelopment.Autocomplete('#aC2', {
+<pre><code class="language-js">new TopMarksDevelopment.Autocomplete('#aC2', {
     source: () =&gt; [
         {
             type: 'My type one',
@@ -106,8 +104,7 @@ new TopMarksDevelopment.Autocomplete('#aC2', {
         <input id="aC3" />
         <details>
             <summary><small>See the code (using <code>bundle.js</code>)</small></summary>
-<pre><code class="language-js">// Drop `TopMarksDevelopment` in CJS
-new TopMarksDevelopment.Autocomplete('#aC3', {
+<pre><code class="language-js">new TopMarksDevelopment.Autocomplete('#aC3', {
     source: [
         "String 1",
         "String 2",
@@ -122,8 +119,7 @@ new TopMarksDevelopment.Autocomplete('#aC3', {
         <input id="aC4" />
         <details>
             <summary><small>See the code (using <code>bundle.js</code>)</small></summary>
-<pre><code class="language-js">// Drop `TopMarksDevelopment` in CJS
-new TopMarksDevelopment.Autocomplete('#aC4', {
+<pre><code class="language-js">new TopMarksDevelopment.Autocomplete('#aC4', {
     source: [
         "String 1",
         "String 2",
@@ -139,8 +135,7 @@ new TopMarksDevelopment.Autocomplete('#aC4', {
         <input id="aC5" />
         <details>
             <summary><small>See the code (using <code>bundle.js</code>)</small></summary>
-<pre><code class="language-js">// Drop `TopMarksDevelopment` in CJS
-new TopMarksDevelopment.Autocomplete('#aC5', {
+<pre><code class="language-js">new TopMarksDevelopment.Autocomplete('#aC5', {
     source: () =&gt; [
         {
             value: 'TopMarksDevelopment.com',
@@ -160,8 +155,7 @@ new TopMarksDevelopment.Autocomplete('#aC5', {
         <input id="aC6" />
         <details>
             <summary><small>See the code (using <code>bundle.js</code>)</small></summary>
-<pre><code class="language-js">// Drop `TopMarksDevelopment` in CJS
-new TopMarksDevelopment.Autocomplete('#aC6', {
+<pre><code class="language-js">new TopMarksDevelopment.Autocomplete('#aC6', {
     source: './tests/testdata.json'
 }).start();
 </code></pre>
@@ -203,7 +197,6 @@ function start() {
     // AC - example 2
     //===============
 
-    // Drop `TopMarksDevelopment` in CJS
     new TopMarksDevelopment.Autocomplete('#aC2', {
         source: () => [
             {
@@ -235,7 +228,6 @@ function start() {
     // AC - example 3
     //===============
 
-    // Drop `TopMarksDevelopment` in CJS
     new TopMarksDevelopment.Autocomplete('#aC3', {
         source: [
             "String 1",
@@ -249,7 +241,6 @@ function start() {
     // AC - example 4
     //===============
 
-    // Drop `TopMarksDevelopment` in CJS
     new TopMarksDevelopment.Autocomplete('#aC4', {
         source: [
             "String 1",
@@ -264,7 +255,6 @@ function start() {
     // AC - example 5
     //===============
 
-    // Drop `TopMarksDevelopment` in CJS
     new TopMarksDevelopment.Autocomplete('#aC5', {
         source: () => [
             {
@@ -283,10 +273,9 @@ function start() {
     // AC - example 6
     //===============
 
-    // Drop `TopMarksDevelopment` in CJS
     new TopMarksDevelopment.Autocomplete('#aC6', {
         source: './testdata.json'
     }).start();
 }
 </script>
-<script src="../lib/bundle.js" defer onload="start()"></script>
+<script src="../lib/index.js" defer onload="start()"></script>

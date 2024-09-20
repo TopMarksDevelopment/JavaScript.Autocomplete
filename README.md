@@ -9,20 +9,32 @@ A small package to provide an autocomplete list as a user is typing.
 -   [Change log](./CHANGELOG.md)
 -   [License (MIT)](./LICENSE)
 
+### Features
+
+-   Supports different sources; whether `string`, `object`, `array` or callback
+-   Allows customization of the source type with strong types
+-   Complete control over construction, with custom renderers
+-   Option to automatically focus on the first element when the menu opens
+-   Configurable delay between keystrokes and source calls
+-   Supports a minimum term, before querying the source
+-   Custom mapping of object properties to the generic type
+-   Flexible positioning of the autocomplete box
+-   Ability to append the menu to a specific element
+-   Event callbacks for menu interactions and lifecycle events
+
 ## Usage
 
 ### Basic usage
 
-To add autocomplete to an input with the class "`autocomplete`", use the sample code below - which will query the specified source URL and expect a JSON response.
-
-Without specifying a type, autocomplete defaults to the generic type:  
-`{ label: string; value: string }`
+> ℹ️ Without specifying a type, autocomplete defaults to the generic type:  
+> `{ label: string; value: string }`
 
 ```TS
 // Using the default options (source is always required)
 new Autocomplete(
     '.autocomplete',
     {
+        // Query this source & expect a JSON response
         source: './relative-folder/query.html'
     }
 )

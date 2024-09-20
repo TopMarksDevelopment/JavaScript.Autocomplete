@@ -1,3 +1,5 @@
+'use strict';
+
 import { JavascriptLogger } from '@topmarksdevelopment/javascript-logger';
 import { IRenderers } from './IDefaultRenderers';
 import { ListItemType, SourceTypes } from '../Types/SourceTypes';
