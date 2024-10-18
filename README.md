@@ -2,27 +2,42 @@
 
 A small package to provide an autocomplete list as a user is typing.
 
-### Links
+### Contents
 
+-   [Features](#features)
+-   [Usage](#usage)
+    -   [Strong Types](#strong-types)
 -   [Options](#options)
     -   [Option Methods](#option-methods)
 -   [Change log](./CHANGELOG.md)
 -   [License (MIT)](./LICENSE)
 
+### Features
+
+-   Supports different sources; whether `string`, `object`, `array` or callback
+-   Allows specification of the source type with strong types
+-   Complete control over construction, with custom renderers
+-   Option to automatically focus on the first element when the menu opens
+-   Configurable delay between keystrokes and source calls
+-   Supports a minimum term, before querying the source
+-   Custom mapping of object properties to the generic type
+-   Flexible positioning of the autocomplete box
+-   Ability to append the menu to a specific element
+-   Event callbacks for menu interactions and lifecycle events
+
 ## Usage
 
 ### Basic usage
 
-To add autocomplete to an input with the class "`autocomplete`", use the sample code below - which will query the specified source URL and expect a JSON response.
-
-Without specifying a type, autocomplete defaults to the generic type:  
-`{ label: string; value: string }`
+> ℹ️ Without specifying a type, autocomplete defaults to the generic type:  
+> `{ label: string; value: string }`
 
 ```TS
 // Using the default options (source is always required)
 new Autocomplete(
     '.autocomplete',
     {
+        // Query this source & expect a JSON response
         source: './relative-folder/query.html'
     }
 )
@@ -30,11 +45,11 @@ new Autocomplete(
     .start();
 ```
 
-<details><summary>
-<h3>Custom source type</h3>
-</summary>
+### Strong Types
 
-You can also specify the source type for some strong types!
+As the package is written in TypeScript, you can specify the `source`'s type.
+
+With the type specified you can write your TypeScript with strong type definitions!
 
 In this example I've provided an array of inputs (that will always be returned) - this is also strongly typed!
 
@@ -44,7 +59,7 @@ type MyType = {
     myCustomValue: string;
 }
 
-// Using the custom MyType (which is now tightly-bound)
+// Specifying MyType means "source" is now tightly-bound
 new Autocomplete<MyType>(
     '.autocomplete',
     {
@@ -69,7 +84,9 @@ new Autocomplete<MyType>(
 
             li.dataset.value = item.myCustomName;
 
-            //li.innerText = item.detail; <-- This isn't in `MyType`
+            // li.innerText = item.detail;
+            //  The above would now throw:
+            //  "Property 'detail' does not exist on type 'MyType'"
 
             li.innerText = item.myCustomValue;
 
@@ -80,8 +97,6 @@ new Autocomplete<MyType>(
     // Don't forget to start it
     .start();
 ```
-
-</details>
 
 ## Options
 
@@ -165,11 +180,12 @@ Called as soon as an item is focused, but before changing its state
 **Call:**
 
 ```TS
+// T is your generic type, if specified
 onItemFocus: (
     ev: Event,
     data: {
         ul: HTMLUListElement
-        item: <T>, // Your generic type, if specified
+        item: <T>,
         input: HTMLInputElement
     }
 ) => {}
@@ -181,11 +197,12 @@ Called as soon as an item is selecetd, but before changing any state
 **Call:**
 
 ```TS
+// T is your generic type, if specified
 onItemSelect: (
     ev: Event,
     data: {
         ul: HTMLUListElement
-        item: <T>, // Your generic type, if specified
+        item: <T>,
         input: HTMLInputElement
     }
 ) => {}
@@ -216,7 +233,6 @@ Called before processing the search
 **Call:**
 
 ```TS
-// T is your generic type, if specified
 onSearch: (ev: Event, data: { term: string }) => {}
 ```
 
@@ -226,7 +242,6 @@ A method called after events have been added
 **Call:**
 
 ```TS
-// T is your generic type, if specified
 onStart: () => {}
 ```
 
@@ -236,6 +251,5 @@ A method called after events have been removed
 **Call:**
 
 ```TS
-// T is your generic type, if specified
 onStop: () => {}
 ```

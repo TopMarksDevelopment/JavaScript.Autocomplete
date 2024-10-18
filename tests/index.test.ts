@@ -1,9 +1,9 @@
 import { Autocomplete, AutocompleteStatus } from '../src/index';
 
-describe('testing index file', () => {
+describe('Core Tests', () => {
     let inputEL: HTMLInputElement, autocomplete: Autocomplete;
 
-    describe('Setup Tes Env', () => {
+    describe('Test environment:-', () => {
         it('has added element', () => {
             inputEL = document.createElement('input');
 
@@ -35,24 +35,27 @@ describe('testing index file', () => {
         });
     });
 
-    test('Initial state = stopped', () =>
-        expect(autocomplete.status).toBe(AutocompleteStatus.Stopped));
+    describe('Upon init/start:-', () => {
+        it('the initial state is "stopped"', () =>
+            expect(autocomplete.status).toBe(AutocompleteStatus.Stopped));
 
-    describe('Starting', () => {
-        it('should not throw', () => expect(autocomplete.start).not.toThrow());
+        it('"starting" should not throw', () =>
+            expect(autocomplete.start).not.toThrow());
 
-        it('state = started', () =>
+        it('the new state should be "started"', () =>
             expect(autocomplete.status).toBe(AutocompleteStatus.Started));
-    });
 
-    describe('After Start: bound element', () => {
-        it('has id', () => expect(inputEL.dataset.acId).toBeDefined());
-        it('has event', () =>
+        it('the input has the AC id', () =>
+            expect(inputEL.dataset.acId).toBeDefined());
+
+        it('the input has the focus event', () =>
             expect(inputEL.dispatchEvent(new Event('focus'))).toBe(true));
     });
 
-    describe('Searching', () => {
-        it('creates <ul>', () => {
+    describe('Searching ensures <ul>:-', () => {
+        let ul: HTMLUListElement;
+
+        it('is created', () => {
             const was = document.body.childElementCount;
 
             inputEL.value = 'Test Value';
@@ -60,12 +63,8 @@ describe('testing index file', () => {
 
             expect(document.body.childElementCount).not.toEqual(was);
         });
-    });
 
-    describe('New <ul>', () => {
-        let ul: HTMLUListElement;
-
-        it('has correct id', () => {
+        it('has the correct id', () => {
             ul =
                 (document.getElementById(
                     inputEL.dataset.acId ?? '',
@@ -78,7 +77,7 @@ describe('testing index file', () => {
 
         it("isn't hidden", () => expect(ul.hidden).toBe(false));
 
-        it('has position', () => {
+        it('has position data', () => {
             // Will be 0, as Jest does no rendering
             expect(ul.style.top).toBeDefined();
         });
