@@ -1,3 +1,5 @@
+'use strict';
+
 import {
     AutocompleteEventFunction as EventFunction,
     CloseEventData,
@@ -29,6 +31,7 @@ export class Autocomplete<T = { label: string; value: string }> {
             lastTerm: string;
             valueStore?: string;
             focusValue?: string;
+            focusPoint?: [number, number];
         }
     > = {};
 
@@ -168,8 +171,14 @@ export class Autocomplete<T = { label: string; value: string }> {
         this._removeFocus(data.ul);
 
         // Focus on the new one
-        const liEl = <HTMLLIElement>ev.target,
-            newVal = liEl.dataset.value || liEl.innerText;
+        const liEl = (<HTMLElement>ev.target).closest('li');
+
+        if (!liEl) {
+            return;
+        }
+
+        const newVal = liEl.dataset.value || liEl.innerText;
+
         liEl.classList.add('focused');
 
         // Update the input value and store
@@ -200,10 +209,10 @@ export class Autocomplete<T = { label: string; value: string }> {
         if (typeof (data.item as { link?: string }).link === 'string') {
             window.location.href = (data.item as { link: string }).link;
         } else {
-            const liEl = <HTMLLIElement>ev.target;
+            const liEl = (<HTMLElement>ev.target).closest('li');
 
             // Set input value
-            data.input.value = liEl.dataset.value ?? liEl.innerText;
+            data.input.value = liEl?.dataset.value ?? liEl?.innerText ?? '';
             this._stateData[data.ul.id].valueStore = data.input.value;
 
             this._clearFocusStore(data.ul.id);
@@ -229,7 +238,7 @@ export class Autocomplete<T = { label: string; value: string }> {
 
         this.options.onOpen?.(ev, data);
 
-        const tL = position({
+        const { top, left } = position({
             target: data.ul,
             anchor: <HTMLElement>ev.target,
             my: this.options.position.my,
@@ -237,12 +246,28 @@ export class Autocomplete<T = { label: string; value: string }> {
             collision: this.options.position.collision,
         });
 
-        data.ul.style.top = tL.top;
-        data.ul.style.left = tL.left;
+        data.ul.style.top = top;
+        data.ul.style.left = left;
         data.ul.hidden = false;
 
         if (this.options.autoFocus) {
             data.ul.children[0]?.dispatchEvent(new Event('focus'));
+        } else {
+            this._stateData[data.ul.id].focusPoint = [-1, -1];
+
+            // If they aren't already hovering over it, remove the focusPoint
+            // so we can trigger mouseover events immediately
+            setTimeout(() => {
+                const focusPoint = this._stateData[data.ul.id].focusPoint;
+
+                if (
+                    focusPoint &&
+                    focusPoint[0] === -1 &&
+                    focusPoint[1] === -1
+                ) {
+                    this._stateData[data.ul.id].focusPoint = undefined;
+                }
+            }, 333);
         }
 
         this._traceLog('Opened menu', `Menu id: ${data.ul.id}`);
@@ -279,6 +304,7 @@ export class Autocomplete<T = { label: string; value: string }> {
             target.value = vS;
 
             this._stateData[data.ul.id].valueStore = undefined;
+            this._stateData[data.ul.id].focusValue = undefined;
 
             this._infoLog('Reverted input', `Input ac-id: ${data.ul.id}`);
         }
@@ -306,8 +332,8 @@ export class Autocomplete<T = { label: string; value: string }> {
                               )
                           ).json() as Promise<ListItemType<T>[]>)
                         : typeof this.options.source === 'function'
-                        ? this.options.source({ term: data.term })
-                        : this.options.source,
+                          ? this.options.source({ term: data.term })
+                          : this.options.source,
             });
         } catch {
             return;
@@ -491,9 +517,14 @@ export class Autocomplete<T = { label: string; value: string }> {
     };
 
     private _itemClickEvent = (ev: MouseEvent) => {
-        const li = <HTMLLIElement>ev.target,
-            ul = <HTMLUListElement>li.parentElement,
-            id = ul.id,
+        const li = (<HTMLElement>ev.target).closest('li'),
+            ul = li?.closest('ul');
+
+        if (!ul || !li) {
+            return;
+        }
+
+        const id = ul.id,
             item =
                 this._stateData[id].data[Array.from(ul.children).indexOf(li)],
             input = <HTMLInputElement>(
@@ -505,19 +536,53 @@ export class Autocomplete<T = { label: string; value: string }> {
         this.itemSelect(ev, { ul, item, input });
     };
 
-    private _itemFocusEvent = (ev: FocusEvent) => {
-        const li = <HTMLLIElement>ev.target,
-            ul = <HTMLUListElement>li.parentElement,
-            id = ul.id,
+    private _itemFocusEvent = (ev: FocusEvent | MouseEvent) => {
+        const li = (<HTMLElement>ev.target).closest('li'),
+            ul = li?.closest('ul');
+
+        if (!ul || !li) {
+            return;
+        }
+
+        const id = ul.id,
             item =
                 this._stateData[id].data[Array.from(ul.children).indexOf(li)],
             input = <HTMLInputElement>(
                 document.querySelector(`input[data-ac-id='${id}']`)
-            );
+            ),
+            that = this;
+
+        if (ev instanceof MouseEvent && this._stateData[id].focusPoint) {
+            const [x, y] = this._stateData[id].focusPoint;
+
+            if (x === -1 && y === -1) {
+                this._stateData[id].focusPoint = [ev.clientX, ev.clientY];
+                li.addEventListener('mousemove', handlePopHover);
+
+                return;
+            }
+
+            this._stateData[id].focusPoint = undefined;
+        }
 
         this._traceLog('Menu item focused', `Item summary: ${li.innerText}`);
 
         this.itemFocus(ev, { ul, item, input });
+
+        function handlePopHover(this: HTMLLIElement, subEv: MouseEvent) {
+            const focusPoint = that._stateData[id].focusPoint;
+
+            if (
+                focusPoint === undefined ||
+                Math.abs(focusPoint[0] - subEv.clientX) > 5 ||
+                Math.abs(focusPoint[1] - subEv.clientY) > 5
+            ) {
+                that._stateData[id].focusPoint = undefined;
+                li!.removeEventListener('mousemove', handlePopHover);
+
+                li!.dispatchEvent(new MouseEvent('mouseover', subEv));
+            }
+        }
     };
 
     private _removeFocus = (ul: HTMLUListElement) => {
@@ -555,25 +620,25 @@ export class Autocomplete<T = { label: string; value: string }> {
     private _debrottle<F extends { (someEv: Event): void }>(func: F) {
         const that = this;
         let calledAgain: boolean;
-        let dTimer: NodeJS.Timer | number | undefined;
+        let dTimer: ReturnType<typeof setTimeout> | undefined;
 
         return function (this: ThisParameterType<F>, ...args: Parameters<F>) {
             if (dTimer) {
                 calledAgain = true;
             } else {
-                const context = this;
+                const subThat = this;
 
                 dTimer = setTimeout(() => {
                     if (calledAgain) {
                         calledAgain = false;
 
-                        func.apply(context, args);
+                        func.apply(subThat, args);
                     }
 
                     dTimer = undefined;
                 }, that.options.delay);
 
-                func.apply(context, args);
+                func.apply(subThat, args);
             }
         };
     }
