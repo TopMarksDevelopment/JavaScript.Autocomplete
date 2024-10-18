@@ -2,8 +2,11 @@
 
 A small package to provide an autocomplete list as a user is typing.
 
-### Links
+### Contents
 
+-   [Features](#features)
+-   [Usage](#usage)
+    -   [Strong Types](#strong-types)
 -   [Options](#options)
     -   [Option Methods](#option-methods)
 -   [Change log](./CHANGELOG.md)
@@ -12,7 +15,7 @@ A small package to provide an autocomplete list as a user is typing.
 ### Features
 
 -   Supports different sources; whether `string`, `object`, `array` or callback
--   Allows customization of the source type with strong types
+-   Allows specification of the source type with strong types
 -   Complete control over construction, with custom renderers
 -   Option to automatically focus on the first element when the menu opens
 -   Configurable delay between keystrokes and source calls
@@ -42,11 +45,11 @@ new Autocomplete(
     .start();
 ```
 
-<details><summary>
-<h3>Custom source type</h3>
-</summary>
+### Strong Types
 
-You can also specify the source type for some strong types!
+As the package is written in TypeScript, you can specify the `source`'s type.
+
+With the type specified you can write your TypeScript with strong type definitions!
 
 In this example I've provided an array of inputs (that will always be returned) - this is also strongly typed!
 
@@ -56,7 +59,7 @@ type MyType = {
     myCustomValue: string;
 }
 
-// Using the custom MyType (which is now tightly-bound)
+// Specifying MyType means "source" is now tightly-bound
 new Autocomplete<MyType>(
     '.autocomplete',
     {
@@ -81,7 +84,9 @@ new Autocomplete<MyType>(
 
             li.dataset.value = item.myCustomName;
 
-            //li.innerText = item.detail; <-- This isn't in `MyType`
+            // li.innerText = item.detail;
+            //  The above would now throw:
+            //  "Property 'detail' does not exist on type 'MyType'"
 
             li.innerText = item.myCustomValue;
 
@@ -92,8 +97,6 @@ new Autocomplete<MyType>(
     // Don't forget to start it
     .start();
 ```
-
-</details>
 
 ## Options
 
@@ -177,11 +180,12 @@ Called as soon as an item is focused, but before changing its state
 **Call:**
 
 ```TS
+// T is your generic type, if specified
 onItemFocus: (
     ev: Event,
     data: {
         ul: HTMLUListElement
-        item: <T>, // Your generic type, if specified
+        item: <T>,
         input: HTMLInputElement
     }
 ) => {}
@@ -193,11 +197,12 @@ Called as soon as an item is selecetd, but before changing any state
 **Call:**
 
 ```TS
+// T is your generic type, if specified
 onItemSelect: (
     ev: Event,
     data: {
         ul: HTMLUListElement
-        item: <T>, // Your generic type, if specified
+        item: <T>,
         input: HTMLInputElement
     }
 ) => {}
@@ -228,7 +233,6 @@ Called before processing the search
 **Call:**
 
 ```TS
-// T is your generic type, if specified
 onSearch: (ev: Event, data: { term: string }) => {}
 ```
 
@@ -238,7 +242,6 @@ A method called after events have been added
 **Call:**
 
 ```TS
-// T is your generic type, if specified
 onStart: () => {}
 ```
 
@@ -248,6 +251,5 @@ A method called after events have been removed
 **Call:**
 
 ```TS
-// T is your generic type, if specified
 onStop: () => {}
 ```
