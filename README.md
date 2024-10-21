@@ -1,5 +1,7 @@
 # Autocomplete (A JavaScript package)
 
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/TopMarksDevelopment/JavaScript.Autocomplete/test.yml?style=for-the-badge&label=Tests)](https://github.com/TopMarksDevelopment/JavaScript.Autocomplete/actions/workflows/test.yml)
+
 A small package to provide an autocomplete list as a user is typing.
 
 ### Contents
