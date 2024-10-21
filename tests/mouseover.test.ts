@@ -1,50 +1,11 @@
-import { Autocomplete, AutocompleteStatus } from '../src/index';
+'use strict';
+
+import { initialiseEnvironment } from './initialiseEnvironment';
 
 jest.useFakeTimers();
 
 describe('Mouseover Tests', () => {
-    let inputEL: HTMLInputElement, autocomplete: Autocomplete;
-
-    describe('Test environment:-', () => {
-        it('has added element', () => {
-            inputEL = document.createElement('input');
-
-            inputEL.classList.add('test');
-            inputEL = document.body.insertAdjacentElement(
-                'beforeend',
-                inputEL,
-            ) as HTMLInputElement;
-
-            expect(inputEL).not.toBeNull();
-        });
-
-        it('has created autocomplete', () => {
-            autocomplete = new Autocomplete('.test', {
-                source: [
-                    { label: 'First label', value: 'First Value' },
-                    { label: 'Second label', value: 'Second Value' },
-                    { label: 'Third label', value: 'Third Value' },
-                    { label: 'Final label', value: 'Final Value' },
-                ],
-                onOpen: (e, data) => {
-                    data.ul.style.width = `${
-                        (e.target as HTMLInputElement).width
-                    }px`;
-                },
-            });
-
-            expect(autocomplete).not.toBeNull();
-        });
-
-        it('has initial state of "stopped"', () =>
-            expect(autocomplete.status).toBe(AutocompleteStatus.Stopped));
-
-        it('"start" should not throw', () =>
-            expect(autocomplete.start).not.toThrow());
-
-        it('now has "started" state', () =>
-            expect(autocomplete.status).toBe(AutocompleteStatus.Started));
-    });
+    const { inputEL, autocomplete } = initialiseEnvironment();
 
     describe('Mouse over', () => {
         beforeEach(() => {
