@@ -1,3 +1,5 @@
+'use strict';
+
 import { Autocomplete, AutocompleteStatus } from '../src/index';
 
 describe('Core Tests', () => {

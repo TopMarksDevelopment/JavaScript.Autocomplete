@@ -326,9 +326,18 @@ export class Autocomplete<T = { label: string; value: string }> {
                     typeof this.options.source === 'string'
                         ? await ((
                               await window.fetch(
-                                  this.options.source +
-                                      '?term=' +
-                                      encodeURIComponent(data.term),
+                                  this.options.source.indexOf('{{term}}') > -1
+                                      ? this.options.source.replace(
+                                            '{{term}}',
+                                            encodeURIComponent(data.term),
+                                        )
+                                      : this.options.source +
+                                            (this.options.source.indexOf('?') >
+                                            -1
+                                                ? '&'
+                                                : '?') +
+                                            'term=' +
+                                            encodeURIComponent(data.term),
                               )
                           ).json() as Promise<ListItemType<T>[]>)
                         : typeof this.options.source === 'function'

@@ -39,6 +39,7 @@ new Autocomplete(
     {
         // Query this source & expect a JSON response
         source: './relative-folder/query.html'
+        // or './relative-folder/{{term}}/query'
     }
 )
     // Don't forget to start it
@@ -107,7 +108,10 @@ The source of the autocompelte data
 #### `SourceTypes<T>`
 
 -   `string`  
-    a URL we will `GET` with a `term` querystring parameter (expects a JSON response)
+    a URL that we will `GET`, expecting a JSON response.  
+    **Note:** the search term is added to the URL in one of two ways
+    -   if `{{term}}` is in the URL, this will be replaced, else
+    -   a `term` querystring parameter is appended to the URL
 -   `Record` set  
     an object with string keys and values, treated as label, value respectively
 -   `string[]`  

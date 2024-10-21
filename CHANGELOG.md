@@ -28,9 +28,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## UNPUBLISHED
 
+### Added
+
+-   A string `source` can now contain `{{term}}`, to accomodate paths where `?term=XXX` isn't suitable
+    -   This means you could now use `example.com/search/{{term}}/other-stuff`
+
 ### Fixed
 
 -   The mouse being over the popup when it's rendered no longer selects that value whilst typing
+-   A string `source` can now contain a querystring (`?`)
+    -   It now checks the source and adds either `?` or `&`, whichever is appropriate
 
 ### Changes
 
