@@ -26,6 +26,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2024-11-08
+
+<small>[Compare to previous release][comp:1.1.1]</small>
+
+### Fixed
+
+-   Fixed the package missing library data
+
+[comp:1.1.1]: https://github.com/TopMarksDevelopment/JavaScript.Autocomplete/compare/v1.1.0...v1.1.1
+[1.1.1]: https://github.com/TopMarksDevelopment/JavaScript.Autocomplete/release/tag/v1.1.1
+
 ## [1.1.0] - 2024-10-21
 
 <small>[Compare to previous release][comp:1.1.0]</small>
